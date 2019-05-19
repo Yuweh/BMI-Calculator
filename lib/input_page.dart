@@ -4,6 +4,9 @@ import 'reusable_card.dart';
 import 'icon_content.dart';
 import 'constants.dart';
 import 'results_page.dart';
+import 'bottom_button.dart';
+import 'round_icon_button.dart';
+import 'calculator_bmi.dart';
 
 enum Gender { male, female }
 
@@ -204,42 +207,29 @@ class _InputPageState extends State<InputPage> {
                 )),
               ],
             )),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ResultsPage()));
+            BottomButton(
+              buttonTitle: 'CALCULATE',
+              onTapped: () {
+                CalculatorBMI calcu =
+                    CalculatorBMI(height: height, weight: weight);
+                print(height);
+                print(weight);
+                print(calcu.calculateBMI());
+                print(calcu.getResult());
+                print(calcu.getInterpretation());
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ResultsPage(
+                          bmiResult: calcu.calculateBMI(),
+                          resultText: calcu.getResult(),
+                          bmiInterpretation: calcu.getInterpretation(),
+                        ),
+                  ),
+                );
               },
-              child: Container(
-                child: Text('CALCULATE'),
-                color: kBottomContainerColour,
-                margin: EdgeInsets.only(top: 10.0),
-                width: double.infinity,
-                height: kBottomContainerHeight,
-              ),
             ),
           ],
         )); //Scaffold
-  }
-}
-
-class RoundIconButton extends StatelessWidget {
-  RoundIconButton({@required this.icon, @required this.onPressed});
-
-  final IconData icon;
-  final Function onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      child: Icon(icon),
-      onPressed: onPressed,
-      elevation: 6.0,
-      constraints: BoxConstraints.tightFor(
-        width: 56.0,
-        height: 56.0,
-      ),
-      shape: CircleBorder(),
-      fillColor: Color(0xFF4C4F5E),
-    );
   }
 }
